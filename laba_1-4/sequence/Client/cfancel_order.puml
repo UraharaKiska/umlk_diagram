@@ -1,0 +1,27 @@
+@startuml
+actor User
+boundary OrderForm
+control OrderController
+entity Order
+
+activate OrderForm
+
+activate OrderController
+OrderForm -> OrderController : (2) Запрос на отмену заказа
+
+activate Order
+OrderController -> Order : (3) Получение статуса заказа
+Order --> OrderController : (4) Статус заказа
+OrderController -> Order : (5) Отменить заказ
+OrderController <-- Order : (6) Успешная отмена
+deactivate Order
+OrderController --> OrderForm : (7) Успешная отмена
+deactivate OrderController
+
+OrderForm -> OrderForm : (8) Обновить страничку
+
+
+
+
+
+@enduml

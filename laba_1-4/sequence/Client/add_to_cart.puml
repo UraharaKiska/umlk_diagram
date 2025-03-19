@@ -1,0 +1,31 @@
+@startuml
+actor User
+boundary ProductForm
+control CartController
+entity Product
+entity Cart
+
+User -> ProductForm : (1) Нажимает "Добавить в корзину"
+activate ProductForm
+
+ProductForm -> CartController : (2) Запрос на добавление товара
+activate CartController
+
+CartController -> Product : (3) Получение информации о товаре
+activate Product
+
+Product --> CartController : (4) Данные о товаре
+deactivate Product
+
+CartController -> Cart : (5) Добавление товара в корзину
+activate Cart
+
+Cart --> CartController : (6) Подтверждение добавления
+deactivate Cart
+
+CartController --> ProductForm : (7) Уведомление об успешном добавлении
+deactivate CartController
+
+ProductForm --> ProductForm : (8) Обновление интерфейса
+
+@enduml

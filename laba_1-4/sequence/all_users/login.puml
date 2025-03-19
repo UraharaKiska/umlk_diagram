@@ -1,0 +1,20 @@
+@startuml
+'left to right direction
+together {
+actor "User" as user
+actor "System" as sys
+}
+together {
+rectangle "LoginForm" as loginForm
+rectangle "LoginController" as loginController
+rectangle "UserEntity" as userEntity
+}
+
+user -right-> loginForm : 1: Enter username and password
+loginForm -right-> loginController : 2: Submit login request
+loginController -right-> userEntity : 3: Verify user credentials
+userEntity --> loginController : 4: Return user data / Error
+loginController -down-> loginForm : 5: Show success / error message
+loginForm -right-> sys : 6: Log login attempt
+
+@enduml

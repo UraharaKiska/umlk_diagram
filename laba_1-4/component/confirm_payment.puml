@@ -1,0 +1,27 @@
+@startuml
+'left to right direction
+together {
+actor "Storekeeper" as storekeeper
+}
+together {
+component "OrderController" as orderController
+component "Order" as order
+component "Payment" as payment
+component "DataBase" as dataBase
+}
+
+storekeeper -right-> orderController : 1: Request payment confirmation (orderId)
+orderController -right-> order : 2: Get order status (orderId)
+order --> orderController : 3: Return order status
+
+alt If order status "Paid"
+    orderController -right-> payment : 4: Confirm payment (orderId)
+    payment --> orderController : 5: Payment confirmed
+    orderController -right-> dataBase : 6: Update order status (orderId, "Confirmed")
+    dataBase --> orderController : 7: Database update successful
+    orderController -down-> storekeeper : 8: Payment confirmed
+else If order status "Unpaid"
+    orderController -down-> storekeeper : 9: Error: Order not paid
+end
+
+@enduml

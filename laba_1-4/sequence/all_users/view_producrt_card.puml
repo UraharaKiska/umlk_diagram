@@ -1,0 +1,24 @@
+@startuml
+actor User
+boundary ProductForm
+control ProductsController
+entity Product
+
+User -> ProductForm : (1) Открывает карточку товара
+activate ProductForm
+
+ProductForm -> ProductsController : (2) Запрос данных о товаре
+activate ProductsController
+
+ProductsController -> Product : (3) Получение информации о товаре
+activate Product
+
+DataBase --> ProductsController : (4) Данные о товаре
+deactivate Product
+
+ProductsController --> ProductForm : (5) Данные о товаре
+deactivate ProductsController
+
+ProductForm --> ProductForm : (6) Отображение информации о товаре
+
+@enduml

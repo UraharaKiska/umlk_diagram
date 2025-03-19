@@ -1,0 +1,38 @@
+@startuml
+actor User
+boundary PaymentForm
+control PaymentController
+entity Payment
+boundary BankSystem
+database DataBase
+
+User -> PaymentForm : (1) Нажимает "Оплатить заказ"
+activate PaymentForm
+
+PaymentForm -> PaymentController : (2) Запрос на обработку платежа
+activate PaymentController
+
+PaymentController -> Payment : (3) Создание платежа
+activate Payment
+
+Payment --> PaymentController : (4) Платеж создан
+deactivate Payment
+
+PaymentController -> BankSystem : (5) Перенаправление в банк
+activate BankSystem
+
+BankSystem --> PaymentController : (6) Подтверждение оплаты
+deactivate BankSystem
+
+PaymentController -> DataBase : (7) Сохранение информации о платеже
+activate DataBase
+
+DataBase --> PaymentController : (8) Подтверждение сохранения
+deactivate DataBase
+
+PaymentController --> PaymentForm : (9) Оплата успешно завершена
+deactivate PaymentController
+
+PaymentForm --> PaymentForm : (10) Обновление интерфейса
+
+@enduml

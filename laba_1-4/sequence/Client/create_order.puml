@@ -1,0 +1,38 @@
+@startuml
+actor User
+boundary CartForm
+control OrderController
+entity Cart
+entity Order
+database DataBase
+
+User -> CartForm : (1) Нажимает "Оформить заказ"
+activate CartForm
+
+CartForm -> OrderController : (2) Запрос на создание заказа
+activate OrderController
+
+OrderController -> Cart : (3) Получение списка товаров
+activate Cart
+
+Cart --> OrderController : (4) Список товаров
+deactivate Cart
+
+OrderController -> Order : (5) Создание заказа
+activate Order
+
+Order --> OrderController : (6) Подтверждение создания
+deactivate Order
+
+OrderController -> DataBase : (7) Сохранение заказа
+activate DataBase
+
+DataBase --> OrderController : (8) Подтверждение сохранения
+deactivate DataBase
+
+OrderController --> CartForm : (9) Успешное оформление заказа
+deactivate OrderController
+
+CartForm --> CartForm : (10) Очистка корзины и обновление интерфейса
+
+@enduml

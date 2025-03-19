@@ -1,0 +1,22 @@
+@startuml
+'left to right direction
+together {
+actor "User" as user
+}
+together {
+rectangle "PaymentForm" as paymentForm
+rectangle "PaymentController" as paymentController
+rectangle "BankSystem" as bankSystem
+rectangle "Payment" as payment
+}
+
+user -right-> paymentForm : 1: Click "Pay Order"
+paymentForm -right-> paymentController : 2: Request payment processing
+paymentController -right-> bankSystem : 5: Redirect to bank
+bankSystem --> paymentController : 6: Payment confirmation
+paymentController -right-> payment : 7: Save payment information
+payment --> paymentController : 8: Confirm saving
+paymentController -down-> paymentForm : 9: Payment successfully completed
+paymentForm -right-> paymentForm : 10: Update UI
+
+@enduml

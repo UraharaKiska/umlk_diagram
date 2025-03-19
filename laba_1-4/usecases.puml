@@ -1,0 +1,52 @@
+@startuml name
+title Варианты использования системы
+
+left to right direction
+
+actor "Client" as Client
+usecase "Оплата заказов" as PayOrder
+usecase "Выбрать способ оплаты" as ChoosePayType
+usecase "Оформление заказов" as AddOrder
+usecase "Добавление товара в корзину" as AddToCart
+usecase "Отмена неоплаченного товара" as CancleOrder
+Client --> PayOrder
+Client --> AddOrder
+Client --> AddToCart
+Client --> CancleOrder
+PayOrder ..> ChoosePayType : include
+
+
+
+
+actor "Admin" as Admin
+usecase "Формирование отчетов" as CreateReport
+usecase "CRUD карточки товара" as ProductCardCRUD
+Admin --> CreateReport
+Admin --> ProductCardCRUD
+
+actor "Storekeeper" as Storekeeper
+usecase  "Подтверждение получения оплаты" as ConfirmPaying
+usecase  "CRUD товаров на складе" as ProductCRUD
+usecase  "Формирование заявки поставщику" as CreateRequestSupplier
+Storekeeper --> ConfirmPaying
+Storekeeper --> ProductCRUD
+Storekeeper --> CreateRequestSupplier
+
+
+actor "AllUsers" as AllUsers
+usecase "Вход в личный кабинет" as Register
+usecase "Просмотр товаров" as ViewProducts
+usecase "Просмотр карточки товара" as ViewProductCard
+Client --|> AllUsers
+Admin --|> AllUsers
+ViewProducts <..  ViewProductCard : extend
+
+AllUsers --> Register
+AllUsers --> ViewProducts
+
+
+
+
+@enduml
+
+

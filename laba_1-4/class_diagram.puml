@@ -1,0 +1,168 @@
+@startuml
+title Диаграмма классов 
+
+
+
+
+' Entety
+class Product {
+    - id: int
+    + title: string
+    + price: Decimal
+    + quantity: int
+    + changeQuantity(): void
+    + getId(): void
+    + setName(): void
+    + setPrice(): void
+
+}
+
+class Order {
+    # id: int
+    + client: id
+    + items: List<Product>
+    + price: Decimal
+    + status: string
+    + dateCreate: datetime
+    + dateUpdate: dateTime
+    + changeStatus(): void
+    + getStatus(): string
+    + cancelOrder(): void
+   
+}
+
+class Cart {
+    # id: int
+    + items: List<Product>
+    + getTotalPrice(): Decimal
+    + getProductList(): items
+    + addProduct(): void
+    + deleteProduct(): void
+}
+
+class User {
+    - id: int
+    + name: string
+    + permission: string
+    + getName(): string
+    + getPermission(): string
+}
+
+class Client {
+}
+
+class Admin {
+
+}
+
+class StoreKeeper {
+
+}
+
+class Report {
+    # id: int
+    + title: string
+    + dateCreate: datetime
+}
+
+
+class Suplier {
+    - id: int
+    + name: string
+    + contactPhone: string
+}
+
+class Payment {
+    - id: int
+    + user_id: int
+    + order_id: int
+    + status: string
+    + getInfo()
+}
+
+Class DataBase {
+    + saveData()
+    + getData()
+}
+
+' Контроллеры
+
+class LoginController {
+    + login(string username, string password): User
+}
+
+
+class ReportController {
+    + generateReport(): Report
+    + getReportById()
+}
+
+class ProductsController {
+    + getLProductsList(): void <<access(User)>>
+    + getProductById(): void <<access(User)>>
+    + addNewProduct(): void <<access(<Admin)>>
+    + deleteProduct(): void <<access(<Admin)>>
+    + updateProduct(): void <<access(<Admin)>>
+    + changeQuantity(): void <<access(StoreKeeper)>>
+}
+
+class PaymentController {
+    + processPayment()
+}
+
+class OrderController {
+    + RequestCreateOrder(): Order
+    + RequestCancelOrder(): void
+    + confirmPayment(): void <<access(StoreKeeper)>>
+    + getAllOrders(): List<Orders>
+}
+
+class SuplierController {
+    + createRequest()
+}
+
+
+' Интерфейсы
+
+interface CartInterface {
+    + addProduct(): void
+    + deleteProduct(): void
+}
+
+User <.. LoginController
+User <|-- Client
+User <|-- Admin
+User <|-- StoreKeeper
+
+Client -- Order
+Client ..> OrderController
+StoreKeeper ..> OrderController
+Admin ..> ReportController
+Admin ..> ProductsController
+
+Order --> Payment
+
+
+StoreKeeper ..>SuplierController
+
+
+Order o--> Product
+
+Cart --|> CartInterface
+Cart o-- Product
+Client -- Cart
+
+OrderController --> Order
+ProductsController --> Product
+ReportController --> Report
+SuplierController --> Suplier
+PaymentController --> Payment
+
+DataBase ..> Order
+DataBase ..> Product
+DataBase ..> User
+DataBase ..> Report
+DataBase ..> Suplier
+
+
+

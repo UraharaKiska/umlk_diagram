@@ -1,0 +1,19 @@
+@startuml
+
+() "First Interface"
+() "Another interface" as Interf2
+interface Interf3
+interface "Last\ninterface" as Interf4
+
+[LoginForm]
+[LoginController] as LoginController
+component LoginService
+component [User Entity] as UserEntity
+
+LoginForm --> LoginController : Uses
+LoginController --> LoginService : Implements
+LoginController --> UserEntity : Uses
+
+footer //Adding "component" to force diagram to be a **component diagram**//
+
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+'left to right direction
+together {
+actor "User" as user
+actor "System" as sys
+}
+together {
+rectangle "ProductForm" as productForm
+rectangle "CartController" as cartController
+rectangle "Cart" as cart
+}
+
+user -right-> productForm : 1: Click "Add to cart"
+productForm -right-> cartController : 2: Request to add product
+cartController -right-> cart : 3: Add product to cart
+cart --> cartController : 4: Confirm addition
+cartController -down-> productForm : 5: Notify success
+productForm -right-> productForm : 6: Update UI
+
+@enduml
