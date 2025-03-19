@@ -3,7 +3,7 @@ title Диаграмма развертывания: Онлайн-магазин
 
 node "Клиентское устройство" as Client {
     component "Браузер" as Browser
-    component "Мобильное приложение банка" as MobileApp
+    ' component "Мобильное приложение банка" as MobileApp
 }
 
 node "Сервер онлайн-магазина" as ShopServer {
@@ -13,15 +13,15 @@ node "Сервер онлайн-магазина" as ShopServer {
 
 node "Банковская система" as BankSystem {
     component "API банка" as BankAPI
-    database "База данных банка" as BankDB
 }
 
 ' Взаимодействия
-Browser --> Backend : HTTP/HTTPS (Запросы)
-Backend --> ShopDB : JDBC/ODBC (Доступ к данным)
-Backend --> BankAPI : API (Обработка платежей)
-Browser --> MobileApp : Редирект (Оплата через приложение)
-MobileApp --> BankAPI : API (Обработка платежей)
-BankAPI --> BankDB : JDBC/ODBC (Сохранение данных)
+
+Client --> ShopServer
+' Browser --> Backend : HTTP/HTTPS (Запросы)
+' Backend --> ShopDB : JDBC/ODBC (Доступ к данным)
+' Backend --> BankAPI : API (Обработка платежей)
+' Browser --> MobileApp : Редирект (Оплата через приложение)
+' MobileApp --> BankAPI : API (Обработка платежей)
 
 @enduml
