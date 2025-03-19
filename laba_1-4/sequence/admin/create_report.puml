@@ -1,0 +1,28 @@
+@startuml
+actor Admin
+boundary ReportForm
+control ReportController
+entity Report
+entity Order
+
+activate ReportForm
+Admin -> ReportForm : (1) select_period()
+
+activate ReportController
+ReportForm -> ReportController : (2) get_report_request()
+
+activate Order
+ReportController -> Order : (3) get_oders()
+Order --> ReportController : (4) List<orders>
+deactivate Order
+
+ReportController -> Report : (5) create_report()
+activate Report
+Report --> ReportController : (6) report_base_64
+
+ReportController --> ReportForm : (7) report_base_64
+deactivate ReportController
+
+ReportForm -> ReportForm : (8) show_report()
+
+@enduml

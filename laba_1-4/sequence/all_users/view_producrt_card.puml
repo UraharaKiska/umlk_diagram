@@ -1,24 +1,26 @@
 @startuml
-actor User
-boundary ProductForm
+actor AllUsers
+boundary ProductsForm
 control ProductsController
 entity Product
 
-User -> ProductForm : (1) Открывает карточку товара
-activate ProductForm
+AllUsers -> ProductsForm : (1) show_product_detailed_info()
+activate ProductsForm
 
-ProductForm -> ProductsController : (2) Запрос данных о товаре
+ProductsForm -> ProductsController : (2) get_product_info_by_id_request()
 activate ProductsController
 
-ProductsController -> Product : (3) Получение информации о товаре
 activate Product
+ProductsController -> Product : (3) get_product_info_by_id()
+ProductsController <-- Product : (4) product info
 
-DataBase --> ProductsController : (4) Данные о товаре
+' DataBase --> ProductsController : (4) Данные о товаре
+
+
+ProductsController --> ProductsForm : (5) product info
 deactivate Product
 
-ProductsController --> ProductForm : (5) Данные о товаре
+ProductsForm -> ProductsForm : (6) update_form()
 deactivate ProductsController
-
-ProductForm --> ProductForm : (6) Отображение информации о товаре
 
 @enduml

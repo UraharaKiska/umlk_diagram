@@ -1,0 +1,27 @@
+@startuml
+title Диаграмма развертывания: Онлайн-магазин и банковская система
+
+node "Клиентское устройство" as Client {
+    component "Браузер" as Browser
+    component "Мобильное приложение банка" as MobileApp
+}
+
+node "Сервер онлайн-магазина" as ShopServer {
+    component "Бэкенд" as Backend
+    database "База данных" as ShopDB
+}
+
+node "Банковская система" as BankSystem {
+    component "API банка" as BankAPI
+    database "База данных банка" as BankDB
+}
+
+' Взаимодействия
+Browser --> Backend : HTTP/HTTPS (Запросы)
+Backend --> ShopDB : JDBC/ODBC (Доступ к данным)
+Backend --> BankAPI : API (Обработка платежей)
+Browser --> MobileApp : Редирект (Оплата через приложение)
+MobileApp --> BankAPI : API (Обработка платежей)
+BankAPI --> BankDB : JDBC/ODBC (Сохранение данных)
+
+@enduml

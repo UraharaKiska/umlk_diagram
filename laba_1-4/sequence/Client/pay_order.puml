@@ -1,38 +1,33 @@
+plantuml
+Copy
 @startuml
-actor User
-boundary PaymentForm
-control PaymentController
-entity Payment
-boundary BankSystem
-database DataBase
+title Диаграмма компонентов системы онлайн-магазина
 
-User -> PaymentForm : (1) Нажимает "Оплатить заказ"
-activate PaymentForm
+package "Пользовательский интерфейс" {
+    component "OrderForm" as OrderForm
+    component "PaymentForm" as PaymentForm
+    component "MobileApp" as MobileApp
+}
 
-PaymentForm -> PaymentController : (2) Запрос на обработку платежа
-activate PaymentController
+package "Контроллеры" {
+    component "PaymentController" as PaymentController
+    component "OrderController" as OrderController
+    component "CartController" as CartController
+    component "LoginController" as LoginController
+    component "ReportController" as ReportController
+    component "SupplierRequestController" as SupplierRequestController
+}
 
-PaymentController -> Payment : (3) Создание платежа
-activate Payment
+package "Сущности" {
+    component "Product" as Product
+    component "Cart" as Cart
+    component "Order" as Order
+    component "Payment" as Payment
+    component "Users" as Users
+    component "Report" as Report
+    component "SupplierRequest" as SupplierRequest
+}
 
-Payment --> PaymentController : (4) Платеж создан
-deactivate Payment
-
-PaymentController -> BankSystem : (5) Перенаправление в банк
-activate BankSystem
-
-BankSystem --> PaymentController : (6) Подтверждение оплаты
-deactivate BankSystem
-
-PaymentController -> DataBase : (7) Сохранение информации о платеже
-activate DataBase
-
-DataBase --> PaymentController : (8) Подтверждение сохранения
-deactivate DataBase
-
-PaymentController --> PaymentForm : (9) Оплата успешно завершена
-deactivate PaymentController
-
-PaymentForm --> PaymentForm : (10) Обновление интерфейса
-
-@enduml
+package "Внешние системы" {
+    component "BankSystem" as BankSystem
+}

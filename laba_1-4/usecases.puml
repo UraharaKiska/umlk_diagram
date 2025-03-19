@@ -26,7 +26,7 @@ Admin --> ProductCardCRUD
 
 actor "Storekeeper" as Storekeeper
 usecase  "Подтверждение получения оплаты" as ConfirmPaying
-usecase  "CRUD товаров на складе" as ProductCRUD
+usecase  "Обновить количестов товаров" as ProductCRUD
 usecase  "Формирование заявки поставщику" as CreateRequestSupplier
 Storekeeper --> ConfirmPaying
 Storekeeper --> ProductCRUD

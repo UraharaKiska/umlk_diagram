@@ -1,32 +1,32 @@
 @startuml
-actor User
+actor AllUsers
 boundary ProductsForm
 control ProductsController
 entity Product
-database DataBase
+' database DataBase
 
-User -> ProductsForm : (1) Открывает страницу товаров
 activate ProductsForm
+AllUsers -> ProductsForm : (1) click_show_products()
 
-ProductsForm -> ProductsController : (2) Запрос списка товаров
+ProductsForm -> ProductsController : (2) get_all_products_request()
 activate ProductsController
 
-ProductsController -> DataBase : (3) Получение списка товаров
-activate DataBase
+' ProductsController -> DataBase : (3) Получение списка товаров
+' activate DataBase
 
-DataBase --> ProductsController : (4) Список товаров
-deactivate DataBase
+' DataBase --> ProductsController : (4) Список товаров
+' deactivate DataBase
 
-ProductsController -> Product : (5) Формирование объектов товаров
+ProductsController -> Product : (5) get_all_products()
 activate Product
 
-Product --> ProductsController : (6) Список объектов товаров
+Product --> ProductsController : (6) products
 deactivate Product
 
-ProductsController --> ProductsForm : (7) Отображение товаров
+ProductsController --> ProductsForm : (7) products
 deactivate ProductsController
 
-ProductsForm --> User : (8) Отображение товаров
-deactivate ProductsForm
+ProductsForm -> ProductsForm : (8) update_form()
+
 
 @enduml

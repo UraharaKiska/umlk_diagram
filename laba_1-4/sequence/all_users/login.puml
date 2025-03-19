@@ -1,20 +1,31 @@
 @startuml
-'left to right direction
-together {
-actor "User" as user
-actor "System" as sys
-}
-together {
-rectangle "LoginForm" as loginForm
-rectangle "LoginController" as loginController
-rectangle "UserEntity" as userEntity
-}
 
-user -right-> loginForm : 1: Enter username and password
-loginForm -right-> loginController : 2: Submit login request
-loginController -right-> userEntity : 3: Verify user credentials
-userEntity --> loginController : 4: Return user data / Error
-loginController -down-> loginForm : 5: Show success / error message
-loginForm -right-> sys : 6: Log login attempt
+actor AllUsers
+boundary LoginForm
+control LoginController
+entity Users
+
+activate AllUsers
+
+activate LoginForm
+AllUsers -> LoginForm : (1) enter_login_and_pass()
+
+activate LoginController
+LoginForm -> LoginController : (2) login_request()
+
+activate Users
+LoginController -> Users : (3) verify_user()
+LoginController <-- Users : (4) verify_status
+
+alt verify_status == "False"
+    LoginController --> LoginForm : (5) error
+    LoginForm -> LoginForm : (6) show_error_message()
+else verify_status == "True"
+    LoginController --> LoginForm : (7) success
+    LoginForm -> LoginForm : (8) show_success_message()
+end
+
+
+
 
 @enduml

@@ -2,30 +2,24 @@
 actor User
 boundary ProductForm
 control CartController
-entity Product
 entity Cart
 
-User -> ProductForm : (1) Нажимает "Добавить в корзину"
+User -> ProductForm : (1) add_to_cart()
 activate ProductForm
 
-ProductForm -> CartController : (2) Запрос на добавление товара
+ProductForm -> CartController : (2) add_product_request()
 activate CartController
 
-CartController -> Product : (3) Получение информации о товаре
-activate Product
-
-Product --> CartController : (4) Данные о товаре
-deactivate Product
-
-CartController -> Cart : (5) Добавление товара в корзину
+CartController -> Cart : (3)  add_product_to_cart()
 activate Cart
 
-Cart --> CartController : (6) Подтверждение добавления
+Cart --> CartController : (4) Подтверждение добавления
 deactivate Cart
 
-CartController --> ProductForm : (7) Уведомление об успешном добавлении
+CartController --> ProductForm : (5) Уведомление об успешном добавлении
 deactivate CartController
 
-ProductForm --> ProductForm : (8) Обновление интерфейса
+ProductForm --> ProductForm : (6) update_form()
 
 @enduml
+ 

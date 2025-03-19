@@ -1,0 +1,39 @@
+@startuml
+actor Storekeeper
+boundary PaymentForm
+control PaymentController
+entity Payment
+entity Order
+
+activate PaymentForm
+Storekeeper -> PaymentForm : (1) click_show_payments()
+
+activate PaymentController
+PaymentForm -> PaymentController : (2) get_payments_list_request()
+
+activate Payment
+PaymentController -> Payment : (3) get_payments_list()
+Payment --> PaymentController : (4) payments
+PaymentController --> PaymentForm : (5) payments
+deactivate PaymentController
+deactivate Payment
+
+PaymentForm -> PaymentForm : (6) show_payments()
+Storekeeper -> PaymentForm : (7) confirm_payment()
+
+activate PaymentController 
+PaymentForm -> PaymentController: (8) confirm_payment_request()
+
+activate Order
+PaymentController -> Order : (9) confirm_order_payed()
+Order --> PaymentController : (10) success
+PaymentController --> PaymentForm : (11) success
+
+PaymentForm -> PaymentForm : (12) success_message()
+
+
+' Storekeeper -> click_confirm_payment()
+
+
+
+@enduml

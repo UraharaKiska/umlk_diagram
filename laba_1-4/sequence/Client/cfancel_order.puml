@@ -5,23 +5,29 @@ control OrderController
 entity Order
 
 activate OrderForm
+User -> OrderForm : (1) click_cancel_order()
+
 
 activate OrderController
-OrderForm -> OrderController : (2) Запрос на отмену заказа
+OrderForm -> OrderController : (2) cancel_order_request()
 
 activate Order
-OrderController -> Order : (3) Получение статуса заказа
-Order --> OrderController : (4) Статус заказа
-OrderController -> Order : (5) Отменить заказ
-OrderController <-- Order : (6) Успешная отмена
+OrderController -> Order : (3) get_payment_status()
+Order --> OrderController : (4) payment_status
+
+alt payment_status == "False"
+    OrderController -> Order : (5) cancel_order()
+    OrderController <-- Order : (6) success
+    OrderController --> OrderForm : (7) success
+else payment_status == "True"
+    OrderController --> OrderForm : (8) error
+end
+
+
 deactivate Order
-OrderController --> OrderForm : (7) Успешная отмена
 deactivate OrderController
 
-OrderForm -> OrderForm : (8) Обновить страничку
-
-
-
+OrderForm -> OrderForm : (8) update_form()
 
 
 @enduml

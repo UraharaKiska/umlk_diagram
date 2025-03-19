@@ -1,0 +1,25 @@
+@startuml
+actor Storekeeper
+boundary SupplierRequestForm
+control  SupplierRequestController
+entity SupplierRequest
+
+activate SupplierRequestForm
+Storekeeper -> SupplierRequestForm : (1) click_create_request()
+
+activate SupplierRequestController
+SupplierRequestForm -> SupplierRequestController : (2) start_create_supplier_request()
+
+activate SupplierRequest
+SupplierRequestController -> SupplierRequest : (3) create_request()
+SupplierRequest --> SupplierRequestController : (4) request
+deactivate SupplierRequest
+
+SupplierRequestController --> SupplierRequestForm : (5) request
+deactivate SupplierRequestController
+
+SupplierRequestForm -> SupplierRequestForm : (6) request_is_created_message()
+
+
+
+@enduml

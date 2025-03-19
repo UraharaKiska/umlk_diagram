@@ -4,35 +4,35 @@ boundary CartForm
 control OrderController
 entity Cart
 entity Order
-database DataBase
+' database DataBase
 
-User -> CartForm : (1) Нажимает "Оформить заказ"
+User -> CartForm : (1) click_create_order()
 activate CartForm
 
-CartForm -> OrderController : (2) Запрос на создание заказа
+CartForm -> OrderController : (2) create_order_request()
 activate OrderController
 
-OrderController -> Cart : (3) Получение списка товаров
+OrderController -> Cart : (3) get_products_list()
 activate Cart
 
-Cart --> OrderController : (4) Список товаров
+Cart --> OrderController : (4) List<Product>
 deactivate Cart
 
-OrderController -> Order : (5) Создание заказа
+OrderController -> Order : (5) create_order()
 activate Order
 
-Order --> OrderController : (6) Подтверждение создания
+Order --> OrderController : (6) True
 deactivate Order
 
-OrderController -> DataBase : (7) Сохранение заказа
-activate DataBase
+' OrderController -> DataBase : (7) Сохранение заказа
+' activate DataBase
 
-DataBase --> OrderController : (8) Подтверждение сохранения
-deactivate DataBase
+' DataBase --> OrderController : (8) Подтверждение сохранения
+' deactivate DataBase
 
-OrderController --> CartForm : (9) Успешное оформление заказа
+OrderController --> CartForm : (7) True
 deactivate OrderController
 
-CartForm --> CartForm : (10) Очистка корзины и обновление интерфейса
+CartForm -> CartForm : (10) update_form()
 
 @enduml

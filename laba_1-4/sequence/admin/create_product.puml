@@ -1,0 +1,29 @@
+@startuml
+actor Admin
+boundary ProductsForm
+control ProductsController
+entity Product
+
+activate ProductsForm
+Admin -> ProductsForm : (1) click_add_product()
+ProductsForm -> ProductsForm : (2) create_product_pop_up()
+Admin -> ProductsForm : (3) enter_product_data()
+
+activate ProductsController
+ProductsForm -> ProductsController : (4) add_product_request()
+
+
+activate Product
+ProductsController -> Product : (5) add_product()
+ProductsController <-- Product : (6) product
+
+' DataBase --> ProductsController : (4) Данные о товаре
+
+
+ProductsController --> ProductsForm : (7) product
+deactivate Product
+
+ProductsForm -> ProductsForm : (6) update_form()
+deactivate ProductsController
+
+@enduml
