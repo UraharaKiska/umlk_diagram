@@ -1,33 +1,58 @@
-plantuml
-Copy
 @startuml
-title Диаграмма компонентов системы онлайн-магазина
+actor User
+boundary OrderForm
+boundary PaymentForm
+control PaymentController
+actor BankSystem
+entity Payment
+boundary MobileApp
 
-package "Пользовательский интерфейс" {
-    component "OrderForm" as OrderForm
-    component "PaymentForm" as PaymentForm
-    component "MobileApp" as MobileApp
-}
+activate OrderForm
+User -> OrderForm : (1) pay_order()
+OrderForm -> PaymentForm : (2) open_payment_form()
+activate PaymentForm
+deactivate OrderForm
 
-package "Контроллеры" {
-    component "PaymentController" as PaymentController
-    component "OrderController" as OrderController
-    component "CartController" as CartController
-    component "LoginController" as LoginController
-    component "ReportController" as ReportController
-    component "SupplierRequestController" as SupplierRequestController
-}
+User -> PaymentForm : (1) start_payment()
 
-package "Сущности" {
-    component "Product" as Product
-    component "Cart" as Cart
-    component "Order" as Order
-    component "Payment" as Payment
-    component "Users" as Users
-    component "Report" as Report
-    component "SupplierRequest" as SupplierRequest
-}
 
-package "Внешние системы" {
-    component "BankSystem" as BankSystem
-}
+
+
+PaymentForm -> PaymentForm : (4) select_payment_pop_up()
+User -> PaymentForm : (5) select_payment()
+
+alt payment == "Card"
+    PaymentForm -> PaymentForm : (6) card_input_pop_up()
+    User -> PaymentForm : (7) enter_card_info()
+    activate PaymentController
+    PaymentForm -> PaymentController : (8) pay_by_card()
+    PaymentController -> BankSystem : (9) payment_request()
+    BankSystem --> PaymentController : (10) success
+    activate Payment
+    PaymentController -> Payment : (11) add_payment()
+    PaymentController <-- Payment : (12) success
+    PaymentController --> PaymentForm : (20) success
+    PaymentForm -> PaymentForm : (21) success_message()
+    deactivate Payment
+    deactivate PaymentController
+
+else payment == "Redirect to Mobile App"
+    PaymentForm -> MobileApp : (13) open_bank_app()
+    note right of MobileApp
+        Пользователя перекидывает в мобильное 
+        приложение, и он продолжает оплату там
+    end note
+    MobileApp --> PaymentForm : (14) success()
+    activate PaymentController
+    PaymentForm -> PaymentController : (15) payed_by_sbp()
+    activate Payment
+    PaymentController -> Payment : (18) add_payment()
+    PaymentController <-- Payment : (19) success
+    PaymentController --> PaymentForm : (20) success
+    PaymentForm -> PaymentForm : (21)  success_message()
+    deactivate Payment
+    deactivate PaymentController
+end
+
+
+@enduml
