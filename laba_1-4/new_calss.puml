@@ -15,6 +15,9 @@ interface ProductForm{
     сlick_show_products()
     show_product_detailed_info()
     enter_product_count()
+    click_delete_decision()
+    delete_decision()
+    
 }
 
 interface OrderForm {

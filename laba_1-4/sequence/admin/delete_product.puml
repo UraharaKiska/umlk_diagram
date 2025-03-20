@@ -7,20 +7,28 @@ entity Product
 Admin -> ProductsForm : (1) click_delete_product()
 activate ProductsForm
 
-ProductsForm -> ProductsController : (2) deletet_product_request()
-activate ProductsController
+ProductsForm -> ProductsForm : (2) deletion_question()
 
-activate Product
-ProductsController -> Product : (3) delete_product()
-ProductsController <-- Product : (4) True
+Admin -> ProductsForm : (3) click_delete_decision()
 
-' DataBase --> ProductsController : (4) Данные о товаре
+alt decision == Yes
+    ProductsForm -> ProductsController : (4) delete_product_request()
+    activate ProductsController
+
+    activate Product
+    ProductsController -> Product : (5) delete_product()
+    ProductsController <-- Product : (6) True
+
+    ProductsController --> ProductsForm : (7) True
+    deactivate Product
+
+    deactivate ProductsController
+    ProductsForm -> ProductsForm : (8) update_form()
+else decision == false
+    ProductsForm -> ProductsForm : (9) update_form()
+end
+    
 
 
-ProductsController --> ProductsForm : (5) True
-deactivate Product
-
-ProductsForm -> ProductsForm : (6) update_form()
-deactivate ProductsController
 
 @enduml
