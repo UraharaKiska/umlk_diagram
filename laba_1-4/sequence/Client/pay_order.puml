@@ -32,28 +32,28 @@ alt payment == "Card"
     activate Payment
     PaymentController -> Payment : (11) add_payment()
     PaymentController <-- Payment : (12) success
-    PaymentController --> PaymentForm : (20) success
-    PaymentForm -> PaymentForm : (21) success_message()
+    PaymentController --> PaymentForm : (13) success
+    PaymentForm -> PaymentForm : (14) success_message()
     deactivate Payment
     deactivate PaymentController
 
 else payment == "SBP"
    
-    PaymentForm -> FormSBP  : (13) open_sbp_form()
+    PaymentForm -> FormSBP  : (15) open_sbp_form()
     activate FormSBP
-    User -> FormSBP : (14) pay_with_sbp()
-    FormSBP --> PaymentForm : (14) success()
-    deactivate FormSBP
+    User -> FormSBP : (16) enter_data()
+    FormSBP -> PaymentController : (17) pay_by_sbp()
     activate PaymentController
-    PaymentForm -> PaymentController : (15) payed_by_sbp()
+    PaymentController -> BankSystem : (18) payment_request()
+    BankSystem --> PaymentController : (19) success
     activate Payment
-    PaymentController -> Payment : (18) add_payment()
-    PaymentController <-- Payment : (19) success
-    PaymentController --> PaymentForm : (20) success
-    PaymentForm -> PaymentForm : (21)  success_message()
+    PaymentController -> Payment : (20) add_payment()
+    PaymentController <-- Payment : (21) success
+    PaymentController --> FormSBP : (22) success
+    FormSBP -> PaymentForm : (23) open_payment_form()
+    deactivate FormSBP
+    PaymentForm -> PaymentForm : (24)  success_message()
     deactivate Payment
     deactivate PaymentController
 end
-
-
 @enduml
