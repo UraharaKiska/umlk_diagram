@@ -2,12 +2,12 @@
 component "Браузер" as Browser
 component "Бэкенд магазина" as Backend
 database "База данных магазина" as ShopDB
-component "API банка" as BankAPI
+component "Бэкенд Банка" as BankAPI
 
 ' Взаимодействие
-Browser --> Backend : HTTP/HTTPS (Оформление заказа)
-Backend --> ShopDB : SQL (Чтение/Запись данных)
-Backend --> BankAPI : API-запрос (Платёж)
-Browser --> BankAPI : 3D Secure (Проверка платежа)
+Browser -- Backend : HTTPS
+Backend -- ShopDB : IDB
+Backend -- BankAPI : HTTPS
+' Browser -- BankAPI : 3D Secure (Проверка платежа)
 
 @enduml

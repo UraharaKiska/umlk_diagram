@@ -1,0 +1,12 @@
+@startuml
+[*] --> entering_login_and_pass : enter_data()
+entering_login_and_pass --> loging_request : login_request()
+loging_request --> verifing_user : verify_data()
+verifing_user --> c
+State c <<choice>>
+c -left-> showing_error_message : CheckingError
+c -right-> showing_success_message : CheckingSuccess
+showing_success_message --> [*] : Close
+State return <<end>>
+showing_error_message -->  return: ReturnLoginForm
+@enduml
