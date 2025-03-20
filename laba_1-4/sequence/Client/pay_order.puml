@@ -2,10 +2,11 @@
 actor User
 boundary OrderForm
 boundary PaymentForm
+boundary FormSBP
 control PaymentController
 actor BankSystem
 entity Payment
-boundary MobileApp
+
 
 activate OrderForm
 User -> OrderForm : (1) pay_order()
@@ -36,13 +37,13 @@ alt payment == "Card"
     deactivate Payment
     deactivate PaymentController
 
-else payment == "Redirect to Mobile App"
-    PaymentForm -> MobileApp : (13) open_bank_app()
-    note right of MobileApp
-        Пользователя перекидывает в мобильное 
-        приложение, и он продолжает оплату там
-    end note
-    MobileApp --> PaymentForm : (14) success()
+else payment == "SBP"
+   
+    PaymentForm -> FormSBP  : (13) open_sbp_form()
+    activate FormSBP
+    User -> FormSBP : (14) pay_with_sbp()
+    FormSBP --> PaymentForm : (14) success()
+    deactivate FormSBP
     activate PaymentController
     PaymentForm -> PaymentController : (15) payed_by_sbp()
     activate Payment

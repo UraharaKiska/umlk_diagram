@@ -53,6 +53,11 @@ interface PaymentForm {
     success_message()
 }
 
+interface FormSBP {
+    open_sbp_form()
+    pay_with_sbp()
+}
+
 class SupplierRequestForm {
     click_create_request()
     request_is_created_message()
@@ -161,12 +166,6 @@ class BankSystem {
     payment_request()
 }
 
-class MobileApp {
-    open_bank_app()
-}
-
-
-
 
 ProductsController ..> Product
 LoginController ..> Users
@@ -195,6 +194,7 @@ PaymentForm ..> MobileApp
 PaymentController ..> Order
 SupplierRequestForm ..> SupplierRequestController 
 SupplierRequestController ..> SupplierRequest
+PaymentForm ..> FormSBP
 
 
 @enduml
