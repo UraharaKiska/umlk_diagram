@@ -1,27 +1,200 @@
 @startuml
-title Диаграмма развертывания: Онлайн-магазин и банковская система
+title Диаграмма классов 
 
-node "Клиентское устройство" as Client {
-    component "Браузер" as Browser
-    ' component "Мобильное приложение банка" as MobileApp
+
+interface ProductForm{
+    add_to_cart()
+    update_form()
+    click_add_product():
+    create_product_pop_up()
+    enter_product_data()
+    click_delete_product()
+    click_update_product()
+    update_product_pop_up()
+    enter_product_data()
+    сlick_show_products()
+    show_product_detailed_info()
+    enter_product_count()
 }
 
-node "Сервер онлайн-магазина" as ShopServer {
-    component "Бэкенд" as Backend
-    database "База данных" as ShopDB
+interface OrderForm {
+   click_cancel_order() void
+   update_form() void
+   pay_order()
 }
 
-node "Банковская система" as BankSystem {
-    component "API банка" as BankAPI
+interface CartForm {
+    click_create_order(): void
+    update_form(): void
 }
 
-' Взаимодействия
+interface ReportForm {
+    select_period(): void
+    show_report(): void
+}
 
-Client --> ShopServer
-' Browser --> Backend : HTTP/HTTPS (Запросы)
-' Backend --> ShopDB : JDBC/ODBC (Доступ к данным)
-' Backend --> BankAPI : API (Обработка платежей)
-' Browser --> MobileApp : Редирект (Оплата через приложение)
-' MobileApp --> BankAPI : API (Обработка платежей)
+interface LoginForm {
+    enter_login_and_pass(): void
+    show_error_message (): void
+    show_success_message(): void
+}
+
+interface PaymentForm {
+    click_show_payments()
+    show_payments()
+    confirm_payment()
+    success_message()
+    start_payment()
+    open_payment_form()
+    select_payment_pop_up()
+    select_payment()
+    card_input_pop_up()
+    enter_card_info()
+    success_message()
+}
+
+class SupplierRequestForm {
+    click_create_request()
+    request_is_created_message()
+
+}
+
+
+class CartController {
+    + add_product_to_cart_request(id: int): bool
+}
+
+class OrderController {
+    cancel_order_request(order_id: int) bool
+    create_order_request(cart_id: int) bool
+}
+
+class ProductsController {
+    add_product_request(id: int, title: string, price: Decimal, quantity: int)
+    delete_product_request(id: int): bool
+    update_product_request(id: int, title: string, price: Decimal, quantity: int)
+    get_all_products_request()
+    get_product_info_by_id_request()
+}
+
+class ReportController {
+    get_report_request(from, to: DateTime): report
+}
+
+class LoginController {
+    login_request(login, pass: string): bool
+}
+
+class PaymentController {
+    get_payments_list_request()
+    confirm_payment_request()
+    pay_by_card()
+    payed_by_sbp()
+}
+
+class SupplierRequestController {
+    start_create_supplier_request()
+}
+
+class Product {
+    - id: int
+    + title: string
+    + price: Decimal
+    + quantity: int
+    + get_product_info(id: int): item
+    + add_product(id: int, title: string, price: Decimal, quantity: int) product
+    + delete_product(id: int): bool
+    + add_product(id: int, title: string, price: Decimal, quantity: int) product
+    + get_all_product()
+    + get_product_info_by_id()
+
+}
+
+class Cart {
+    - id: int
+    + items: List<Product>
+    + add_product_to_cart(id_product, id_cart: int): bool
+    + get_product_list(cart_id: int): List<Product>
+}
+
+class Order {
+    - id: int
+    + client: id
+    + items: List<Product>
+    + price: Decimal
+    + status: string
+    + payment_status: bool
+    + create_date: DateTime
+    + get_payment_status(order_id: int): payment_status
+    + cancel_order(order_id: int): bool
+    + create_order(user_id: int, products: List<Product>): bool
+    + get_orders(from, to: DateTime): List<orders>
+    + confirm_order_payed(id: int)
+}
+
+class Report {
+    - id: int
+    + create_date: dateTime
+    + base_64: string
+    + create_report(orders:  List<orders>): string
+}
+
+class Users {
+    - id: int
+    + login: string
+    + permission: string
+    + password_hash: string
+    + verify_user(login, password_hash): bool
+}
+
+class Payment {
+    get_payments_list()
+    add_payment()
+}
+
+class SupplierRequest {
+    create_request()
+}
+
+
+class BankSystem {
+    payment_request()
+}
+
+class MobileApp {
+    open_bank_app()
+}
+
+
+
+
+ProductsController ..> Product
+LoginController ..> Users
+
+
+Cart o-- Product
+Order *-- Product
+
+ProductForm..> ProductsController 
+ReportForm ..> ReportController 
+ReportController ..> Order
+ReportController ..> Report
+OrderController ..> PaymentController
+LoginForm ..> LoginController
+ProductForm..> CartController
+CartController ..> Cart
+OrderForm ..> OrderController
+OrderController ..> Order
+CartForm ..> OrderController
+OrderController ..> Cart
+OrderForm ..> PaymentForm
+PaymentForm ..> PaymentController
+PaymentControllser ..> BankSystem
+PaymentController ..> Payment
+PaymentForm ..> MobileApp
+PaymentController ..> Order
+SupplierRequestForm ..> SupplierRequestController 
+SupplierRequestController ..> SupplierRequest
+
 
 @enduml
